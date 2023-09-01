@@ -57,8 +57,6 @@ services:
       interval: 1s
       timeout: 5s
       retries: 10
-    ports:
-      - "3456:3456"
     depends_on:
       geth:
         condition: service_healthy
