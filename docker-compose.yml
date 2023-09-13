@@ -7,7 +7,7 @@ networks:
 services:
   geth:
     container_name: dogefuzz_geth
-    build: https://github.com/dogefuzz/enhanced-go-ethereum.git#main
+    build: https://github.com/faustocarva/enhanced-go-ethereum.git#main
     environment:
       CHAIN_ID: 1900
       NODE_WALLET_ADDRESS: '0x095e7e130af11aebd04fb5fb81193bda66eefb81'
@@ -26,8 +26,8 @@ services:
     restart: on-failure
     healthcheck:
       test: ["CMD", "curl", "-X", "POST", "-h", "Content-Type: application/json", "--data", '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x1", false],"id":1}', "http://localhost:8545"]
-      interval: 1s
-      timeout: 5s
+      interval: 3s
+      timeout: 10s
       retries: 10
     networks:
       - dogefuzz_benchmark
