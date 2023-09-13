@@ -23,6 +23,7 @@ docker build -t benchmark:1.0.0 --quiet .;
 
 echo "[3] Running benchmark"
 docker run \
+    --rm \
     --network dogefuzz_benchmark \
     --network-alias benchmark \
     --name dogefuzz_benchmark \
