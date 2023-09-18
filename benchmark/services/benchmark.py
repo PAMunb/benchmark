@@ -80,7 +80,7 @@ class BenchmarkService(metaclass=SingletonMeta):
                     timeout = int(entry.duration[:-1])
                     request_result = self._wait_dogefuzz_respond(
                         task_id, timeout, stop)
-                    if result is None:
+                    if request_result is None:
                         result["status"] = "timeout"
                         result["error"] = f"timeout after {timeout} + 5 minutes"
                         result["execution"] = None

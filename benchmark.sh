@@ -1,6 +1,17 @@
 #!/bin/bash
 set -e
 
+cleanup() {
+    echo "Cleaning up..."
+    docker rm -f dogefuzz_benchmark 2> /dev/null;
+    docker compose down 2> /dev/null;
+    exit 0
+}
+
+trap 'cleanup' SIGTERM
+trap 'cleanup' SIGKILL
+trap 'cleanup' INT
+
 mkdir -p results
 
 echo "[1] Starting fuzzer and dependencies"
@@ -23,6 +34,7 @@ docker build -t benchmark:1.0.0 --quiet .;
 
 echo "[3] Running benchmark"
 docker run \
+    --rm \
     --network dogefuzz_benchmark \
     --network-alias benchmark \
     --name dogefuzz_benchmark \
@@ -32,5 +44,4 @@ docker run \
     $@;
 
 echo "[4] Stopping all containers"
-docker rm -f dogefuzz_benchmark > /dev/null;
-docker compose down > /dev/null;
+cleanup()
