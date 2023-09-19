@@ -33,13 +33,13 @@ services:
       - dogefuzz_benchmark
   vandal:
     container_name: dogefuzz_vandal
-    build: https://github.com/dogefuzz/vandal-api.git#main
+    build: https://github.com/pamunb/vandal-api.git#main
     restart: on-failure
     networks:
       - dogefuzz_benchmark
   dogefuzz:
     container_name: dogefuzz_api
-    build: https://github.com/dogefuzz/dogefuzz.git#main
+    build: https://github.com/pamunb/dogefuzz.git#main
     ports:
       - "3456:3456"
     networks:
@@ -54,7 +54,7 @@ services:
       DOGEFUZZ_FUZZER_PENDINGTRANSACTIONSTHRESHOLD: 3
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3456/ping"]
-      interval: 1s
+      interval: 5s
       timeout: 5s
       retries: 10
     depends_on:
