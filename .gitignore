@@ -20,5 +20,7 @@ script.json
 results/
 result.json
 
+dataset/
+
 # logs
 *.log

@@ -48,7 +48,7 @@ class BenchmarkService(metaclass=SingletonMeta):
                     contract_source = None
                     try:
                         contract_source = self._contract_service.read_contract(
-                            entry.contract)
+                            entry)
                     except ContractNotFoundException as ex:
                         result["status"] = "error"
                         result["error"] = str(ex)

@@ -20,14 +20,14 @@ class DriveService:
         """
         downloads contract from google drive
         """
-        contracts_folder = self._config.contracts_folder
-        if not os.path.exists(contracts_folder):
-            os.makedirs(contracts_folder)
+        contracts_download_folder = self._config.contracts_download_folder
+        if not os.path.exists(contracts_download_folder):
+            os.makedirs(contracts_download_folder)
         else:
-            shutil.rmtree(contracts_folder, ignore_errors=True)
-            os.makedirs(contracts_folder)
+            shutil.rmtree(contracts_download_folder, ignore_errors=True)
+            os.makedirs(contracts_download_folder)
 
-        inputs_path = os.path.join(contracts_folder, ZIP_FILENAME)
+        inputs_path = os.path.join(contracts_download_folder, ZIP_FILENAME)
         if os.path.exists(inputs_path):
             os.remove(inputs_path)
 
@@ -39,6 +39,6 @@ class DriveService:
         )
 
         with zipfile.ZipFile(inputs_path, 'r') as zip_file:
-            zip_file.extractall(contracts_folder)
+            zip_file.extractall(contracts_download_folder)
 
         os.remove(inputs_path)

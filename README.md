@@ -16,10 +16,10 @@ And execute the script:
 benchmark.sh script
 ```
 
-To run all contracts available, run the follwing command passing the duration and type of fuzzing:
+To run all contracts available, run the follwing command passing the duration, type of fuzzing and repetition times:
 
 ```
-benchmark.sh all 30m directed_greybox
+benchmark.sh all 30m directed_greybox 1
 ```
 
 ## Running the project locally

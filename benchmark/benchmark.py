@@ -45,6 +45,7 @@ class Benchmark():
     def all(self, duration: str, fuzzing_types: str, times: str):
         """benchmarks all available contracts
         """
+        self._drive_service.download_contracts()
         fuzzing_types_list = fuzzing_types.split(",")
         contracts = self._contract_service.list_contracts_from_contract_list()
         request = RequestFactory.from_contracts_list(
@@ -63,14 +64,6 @@ class Benchmark():
         """downloads contracts from cloud
         """
         self._drive_service.download_contracts()
-
-    def list_available_contracts(self):
-        """lists available contracts
-        """
-        contracts = self._contract_service.list_contracts_from_contract_list()
-        print(f"read {len(contracts)} contracts:")
-        for element in contracts:
-            print(element)
 
     def _write_result(self, result: list):
         """writes the result to a file

@@ -1,7 +1,8 @@
 """
 """
+import warnings
 from queue import Queue
-from tqdm import tqdm
+from tqdm import tqdm, TqdmWarning
 from benchmark.shared.singleton import SingletonMeta
 
 
@@ -13,6 +14,7 @@ class ProgressService(metaclass=SingletonMeta):
     def __init__(self) -> None:
         self._progress_bar: tqdm = None
         self._queue = Queue()
+        warnings.filterwarnings("ignore", category=TqdmWarning)
 
     def start(self):
         """

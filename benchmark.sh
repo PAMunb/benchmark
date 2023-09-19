@@ -40,8 +40,9 @@ docker run \
     --name dogefuzz_benchmark \
     -p "5000:5000" \
     -v "$PWD/results:/app/results" \
+    -v "$PWD/dataset:/app/dataset" \
     benchmark:1.0.0 \
     $@;
 
 echo "[4] Stopping all containers"
-cleanup()
+cleanup

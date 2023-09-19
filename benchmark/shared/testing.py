@@ -9,12 +9,13 @@ class Entry():
     """represents a single testing entry, which is a single execution of the dogefuzz
     """
 
-    def __init__(self, contract: str, args: list, duration: str, fuzzing_types: list, times: int) -> None:
+    def __init__(self, contract: str, args: list, duration: str, fuzzing_types: list, times: int, from_script: bool) -> None:
         self.contract = contract
         self.args = args
         self.duration = duration
         self.fuzzing_types = fuzzing_types
         self.times = times
+        self.from_script = from_script
 
 
 class Request():
@@ -39,7 +40,7 @@ class RequestFactory():
 
         testing_entries = []
         for contract in contracts:
-            entry = Entry(contract["name"], [], duration, fuzzing_types, times)
+            entry = Entry(contract["name"], [], duration, fuzzing_types, times, False)
             testing_entries.append(entry)
         return Request(testing_entries)
 
@@ -61,7 +62,8 @@ class RequestFactory():
                 entry["arguments"],
                 duration,
                 fuzzing_types,
-                times
+                times,
+                True
             )
             testing_entries.append(entry)
         return Request(testing_entries)

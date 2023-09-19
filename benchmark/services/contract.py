@@ -3,6 +3,7 @@ import os
 
 from benchmark.config import Config
 from benchmark.shared.exceptions import ContractNotFoundException, ContractsNotFoundException
+from benchmark.shared.testing import Entry
 
 NAME_COLUMN = 0
 VULNERABILITIES_COLUMN = 1
@@ -10,7 +11,7 @@ LINK_COLUMN = 2
 
 
 class ContractService():
-    """sertice that contains operations with the available contracts
+    """service that contains operations with the available contracts
     """
 
     def __init__(self) -> None:
@@ -35,13 +36,13 @@ class ContractService():
     def list_contracts_from_contract_list(self) -> list:
         """lists the contracts from the contracts.csv file
         """
-        if not os.path.exists(self._config.contracts_folder):
+        if not os.path.exists(self._config.contracts_download_folder):
             raise ContractsNotFoundException(
                 "the contracts were not downloaded yet. Please use the command download_contracts first")
 
         contracts = []
         contracts_csv = os.path.join(
-            self._config.contracts_folder, "contracts.csv")
+            self._config.contracts_download_folder, "contracts.csv")
         with open(contracts_csv, 'r', encoding="utf-8") as file:
             reader = csv.reader(file)
             for row in reader:
@@ -54,15 +55,15 @@ class ContractService():
 
         return contracts
 
-    def read_contract(self, contract_name: str) -> str:
+    def read_contract(self, entry: Entry) -> str:
         """reads the contract's content
         """
         content = None
         contract_path = os.path.join(
-            self._config.contracts_folder, "contracts", contract_name)
+            self._config.contracts_folder if entry.from_script else self._config.contracts_download_folder, "contracts", entry.contract)
         if not os.path.exists(contract_path):
             raise ContractNotFoundException(
-                f"the contract {contract_name} was not found")
+                f"the contract {entry.contract} was not found")
         with open(contract_path, 'r', encoding="utf-8") as file:
             content = file.read()
         return content
