@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 cleanup() {
     echo "Cleaning up..."
@@ -8,9 +7,7 @@ cleanup() {
     exit 0
 }
 
-trap 'cleanup' SIGTERM
-trap 'cleanup' SIGKILL
-trap 'cleanup' INT
+trap 'cleanup' SIGTERM SIGKILL INT
 
 mkdir -p results
 
@@ -38,6 +35,8 @@ docker run \
     --network dogefuzz_benchmark \
     --network-alias benchmark \
     --name dogefuzz_benchmark \
+    --init \
+    -it \
     -p "5000:5000" \
     -v "$PWD/results:/app/results" \
     -v "$PWD/dataset:/app/dataset" \
