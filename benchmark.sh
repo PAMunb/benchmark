@@ -2,8 +2,8 @@
 
 cleanup() {
     echo "Cleaning up..."
-    docker rm -f dogefuzz_benchmark 2> /dev/null;
-    docker compose down 2> /dev/null;
+    docker rm -f dogefuzz_benchmark_$1 2> /dev/null;
+    docker compose -p $1 down 2> /dev/null;
     exit 0
 }
 
@@ -12,11 +12,14 @@ trap 'cleanup' SIGTERM SIGKILL INT
 mkdir -p results
 
 echo "[1] Starting fuzzer and dependencies"
-docker compose up -d;
+project_name="$(date +"%Y%m%d%H%M%S")-$(hostname | tr '[:upper:]' '[:lower:]')"
+
+docker compose -p $project_name up -d;
 
 echo "[1.1] Wait for all containers to be healthy"
 while true; do
-  health_status=$(docker inspect --format='{{.State.Health.Status}}' dogefuzz_api);
+  dogefuzz_id=$(docker ps --filter "name=$project_name-dogefuzz" -q)
+  health_status=$(docker inspect --format='{{.State.Health.Status}}' $dogefuzz_id);
 
   if [ "$health_status" = "healthy" ]; then
     echo "All containers are healthy";
@@ -32,16 +35,15 @@ docker build -t benchmark:1.0.0 --quiet .;
 echo "[3] Running benchmark"
 docker run \
     --rm \
-    --network dogefuzz_benchmark \
+    --network ${project_name}_default \
     --network-alias benchmark \
-    --name dogefuzz_benchmark \
+    --name dogefuzz_benchmark_$project_name \
     --init \
     -it \
-    -p "5000:5000" \
     -v "$PWD/results:/app/results" \
     -v "$PWD/dataset:/app/dataset" \
     benchmark:1.0.0 \
     $@;
 
 echo "[4] Stopping all containers"
-cleanup
+cleanup $project_name
