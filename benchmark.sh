@@ -1,9 +1,14 @@
 #!/bin/bash
 
+
+project_name="$(date +"%Y%m%d%H%M%S")-$(hostname | tr '[:upper:]' '[:lower:]')"
+
+
+
 cleanup() {
     echo "Cleaning up..."
-    docker rm -f dogefuzz_benchmark_$1 2> /dev/null;
-    docker compose -p $1 down 2> /dev/null;
+    docker rm -f dogefuzz_benchmark_$project_name &>/dev/null
+    docker compose -p $project_name down &>/dev/null
     exit 0
 }
 
@@ -12,7 +17,6 @@ trap 'cleanup' SIGTERM SIGKILL INT
 mkdir -p results
 
 echo "[1] Starting fuzzer and dependencies"
-project_name="$(date +"%Y%m%d%H%M%S")-$(hostname | tr '[:upper:]' '[:lower:]')"
 
 docker compose -p $project_name up -d;
 
@@ -46,4 +50,4 @@ docker run \
     $@;
 
 echo "[4] Stopping all containers"
-cleanup $project_name
+cleanup

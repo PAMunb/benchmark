@@ -35,10 +35,10 @@ class Benchmark():
         self._contract_service = ContractService()
         self._script_service = ScriptService()
 
-    def script(self):
+    def script(self, script_name: str):
         """benchmarks based on a script file
         """
-        request = self._script_service.read_testing_request_from_script()
+        request = self._script_service.read_testing_request_from_script(script_name)
         result = self._benchmark_service.run(request, stop_threads)
         self._write_result(result)
 

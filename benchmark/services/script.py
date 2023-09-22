@@ -15,10 +15,10 @@ class ScriptService(metaclass=SingletonMeta):
     def __init__(self) -> None:
         self._config = Config()
 
-    def read_testing_request_from_script(self) -> Request:
+    def read_testing_request_from_script(self, script_name: str) -> Request:
         """reads the script file and convert it into a Request class
         """
-        with open(self._config.script_path, encoding="utf-8") as file:
+        with open(script_name + ".json", encoding="utf-8") as file:
             script_content = json.load(file)
             request = RequestFactory.from_script(script_content)
         return request
