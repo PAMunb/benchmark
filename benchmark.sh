@@ -44,6 +44,7 @@ docker run \
     --name dogefuzz_benchmark_$project_name \
     --init \
     -it \
+    -p "5000" \
     -v "$PWD/results:/app/results" \
     -v "$PWD/dataset:/app/dataset" \
     benchmark:1.0.0 \
