@@ -7,8 +7,8 @@ project_name="$(date +"%Y%m%d%H%M%S")-$(hostname | tr '[:upper:]' '[:lower:]')"
 
 cleanup() {
     echo "Cleaning up..."
+    docker compose -p $project_name down &>/dev/null    
     docker rm -f dogefuzz_benchmark_$project_name &>/dev/null
-    docker compose -p $project_name down &>/dev/null
     exit 0
 }
 

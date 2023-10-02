@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   geth:
-    build: https://github.com/pamunb/enhanced-go-ethereum.git#main
+    build: https://github.com/pamunb/dogefuzz-enhanced-go-ethereum.git#main
     environment:
       CHAIN_ID: 1900
       NODE_WALLET_ADDRESS: '0x095e7e130af11aebd04fb5fb81193bda66eefb81'
@@ -20,12 +20,12 @@ services:
       FUZZER_PORT: '3456'
     restart: on-failure
     healthcheck:
-      test: ["CMD", "curl", "-X", "POST", "-h", "Content-Type: application/json", "--data", '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x1", false],"id":1}', "http://localhost:8545"]
+      test: ["CMD", "curl", "-X", "POST", "-H", "Content-Type: application/json", "--data", '{"jsonrpc":"2.0","method":"eth_getBlockByNumber","params":["0x1", false],"id":1}', "http://localhost:8545"]
       interval: 3s
       timeout: 10s
       retries: 10
   vandal:
-    build: https://github.com/pamunb/vandal-api.git#main
+    build: https://github.com/pamunb/dogefuzz-vandal-api.git#main
     restart: on-failure
   dogefuzz:
     build: https://github.com/pamunb/dogefuzz.git#main
