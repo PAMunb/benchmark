@@ -16,7 +16,7 @@ class DriveService:
     def __init__(self) -> None:
         self._config = Config()
 
-    def download_contracts(self):
+    def download_contracts(self, uri: str):
         """
         downloads contract from google drive
         """
@@ -32,7 +32,7 @@ class DriveService:
             os.remove(inputs_path)
 
         gdown.download(
-            url=self._config.contracts_zip_url,
+            url=uri,
             output=inputs_path,
             quiet=True,
             fuzzy=True,

@@ -18,6 +18,11 @@ class InvalidFuzzingType(Exception):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
 
+class InvalidURI(Exception):
+    """this exception is raised when an invalid value for URI is provided
+    """
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
 
 class InvalidDuration(Exception):
     """this exception is raised when an invalid duration is provided

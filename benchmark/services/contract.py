@@ -17,6 +17,25 @@ class ContractService():
     def __init__(self) -> None:
         self._config = Config()
 
+    def list_contracts_from_folder(self, folder: str) -> list:
+        """lists the contracts from the folder
+        """
+        if not os.path.exists(folder):
+            raise ContractsNotFoundException(
+                "the contracts were not downloaded yet. Please use the command download_contracts first")
+
+        contracts = []
+        contracts_dir = os.path.join(
+            folder)
+        for file in os.listdir(contracts_dir):
+            if os.path.isfile(os.path.join(contracts_dir, file)):
+                contract = {
+                    "name": file,
+                }
+                contracts.append(contract)
+
+        return contracts
+    
     def list_contracts_from_contract_folder(self) -> list:
         """lists the contracts from the contracts/ folder
         """
@@ -59,8 +78,7 @@ class ContractService():
         """reads the contract's content
         """
         content = None
-        contract_path = os.path.join(
-            self._config.contracts_folder if entry.from_script else self._config.contracts_download_folder, "contracts", entry.contract)
+        contract_path = os.path.join(entry.path, entry.contract)
         if not os.path.exists(contract_path):
             raise ContractNotFoundException(
                 f"the contract {entry.contract} was not found")

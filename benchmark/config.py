@@ -9,7 +9,7 @@ class Config(metaclass=SingletonMeta):
     """
 
     def __init__(self) -> None:
-        self.contracts_zip_url: str = "https://drive.google.com/file/d/1y43UDNO-5kRaxsvbTseuIkwYYa33K6_e/view?usp=share_link"
+        #self.contracts_zip_url: str = "https://drive.google.com/file/d/1y43UDNO-5kRaxsvbTseuIkwYYa33K6_e/view?usp=share_link"
         self.contracts_folder: str = "dataset"
         self.contracts_download_folder: str = self.contracts_folder + "/" + ".temp"
         self.dogefuzz_endpoint: str = "http://dogefuzz:3456"

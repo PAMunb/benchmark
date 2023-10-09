@@ -4,6 +4,7 @@ import json
 import multiprocessing
 import signal
 import os
+import urllib.parse
 
 from datetime import datetime
 from benchmark.services.contract import ContractService
@@ -12,6 +13,7 @@ from benchmark.services.progress import ProgressService
 from benchmark.services.drive import DriveService
 from benchmark.services.script import ScriptService
 from benchmark.shared.testing import RequestFactory
+from benchmark.config import Config
 
 stop_threads = multiprocessing.Event()
 
@@ -34,6 +36,7 @@ class Benchmark():
         self._drive_service = DriveService()
         self._contract_service = ContractService()
         self._script_service = ScriptService()
+        self._config = Config()        
 
     def script(self, script_name: str):
         """benchmarks based on a script file
@@ -42,14 +45,21 @@ class Benchmark():
         result = self._benchmark_service.run(request, stop_threads)
         self._write_result(result)
 
-    def all(self, duration: str, fuzzing_types: str, times: str):
+    def all(self, uri: str, duration: str, fuzzing_types: str, times: str):
         """benchmarks all available contracts
         """
-        self._drive_service.download_contracts()
-        fuzzing_types_list = fuzzing_types.split(",")
-        contracts = self._contract_service.list_contracts_from_contract_list()
+        parsed_uri = urllib.parse.urlparse(uri)
+        if parsed_uri.scheme:
+            self._drive_service.download_contracts(uri)
+            path = self._config.contracts_download_folder + "/" + "contracts"        
+            contracts = self._contract_service.list_contracts_from_contract_list()
+        else: 
+            path = uri
+            contracts = self._contract_service.list_contracts_from_folder(path)
+            
+        fuzzing_types_list = fuzzing_types.split(",")        
         request = RequestFactory.from_contracts_list(
-            contracts, duration, fuzzing_types_list, times)
+            contracts, duration, fuzzing_types_list, times, path)
 
         result = self._benchmark_service.run(request, stop_threads)
         self._write_result(result)

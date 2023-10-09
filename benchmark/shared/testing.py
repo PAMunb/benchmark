@@ -1,21 +1,19 @@
 """this module contains class that will describe the testing process
 """
-
-
+import urllib.parse
 from benchmark.shared.utils import validate_duration, validate_fuzzing_types
-
 
 class Entry():
     """represents a single testing entry, which is a single execution of the dogefuzz
     """
 
-    def __init__(self, contract: str, args: list, duration: str, fuzzing_types: list, times: int, from_script: bool) -> None:
+    def __init__(self, contract: str, args: list, duration: str, fuzzing_types: list, times: int, path: str) -> None:
         self.contract = contract
         self.args = args
         self.duration = duration
         self.fuzzing_types = fuzzing_types
         self.times = times
-        self.from_script = from_script
+        self.path = path
 
 
 class Request():
@@ -32,7 +30,7 @@ class RequestFactory():
     """
 
     @classmethod
-    def from_contracts_list(cls, contracts: list, duration: str, fuzzing_types: list, times: int) -> Request:
+    def from_contracts_list(cls, contracts: list, duration: str, fuzzing_types: list, times: int, path: str) -> Request:
         """creates the Request class from a list of contracts
         """
         validate_duration(duration)
@@ -40,30 +38,44 @@ class RequestFactory():
 
         testing_entries = []
         for contract in contracts:
-            entry = Entry(contract["name"], [], duration, fuzzing_types, times, False)
+            entry = Entry(contract["name"], [], duration, fuzzing_types, times, path)
             testing_entries.append(entry)
         return Request(testing_entries)
 
     @classmethod
-    def from_script(cls, script_content: map) -> Request:
+    def from_script(cls, script_content: map, contracts: list, path: str) -> Request:
         """creates the Request class from the script.json content
         """
         duration = script_content["duration"]
         fuzzing_types = script_content["fuzzingTypes"]
         times = script_content["times"]
-
+        
         validate_duration(duration)
-        validate_fuzzing_types(fuzzing_types)
-
+        validate_fuzzing_types(fuzzing_types)  
+                          
         testing_entries = []
-        for entry in script_content["contracts"]:
-            entry = Entry(
-                entry["name"],
-                entry["arguments"],
-                duration,
-                fuzzing_types,
-                times,
-                True
-            )
-            testing_entries.append(entry)
+        if script_content.get("contracts") is None:
+            for entry in contracts:
+                entry = Entry(
+                    entry["name"],
+                    [],
+                    duration,
+                    fuzzing_types,
+                    times,
+                    path
+                )
+                testing_entries.append(entry)
+                 
+        else:
+            for entry in script_content["contracts"]:
+                entry = Entry(
+                    entry["name"],
+                    entry["arguments"],
+                    duration,
+                    fuzzing_types,
+                    times,
+                    path
+                )
+                testing_entries.append(entry)
+
         return Request(testing_entries)
