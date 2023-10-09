@@ -13,26 +13,26 @@ cp script.json.template script.json
 And execute the script:
 
 ```
-benchmark.sh script
+benchmark.sh script <script_name>
 ```
 
-To run all contracts available, run the follwing command passing the duration, type of fuzzing and repetition times:
+To run all contracts available, run the following command passing the duration, type of fuzzing, and repetition times:
 
 ```
-benchmark.sh all 30m directed_greybox 1
+benchmark.sh <uri_or_folder> all 30m directed_greybox 1
 ```
 
 ## Running the project locally
-This project using Python 3.10 and [Poetry](https://python-poetry.org/) to manage its dependencies and virtual environment.
+This project uses Python 3.10 and [Poetry](https://python-poetry.org/) to manage its dependencies and virtual environment.
 
 To run the project using a script, execute the following commands:
 ```
 cp script.json.template script.json
-poetry run benchmark script
+poetry run benchmark script <script_name>
 ```
 
 To run the project with all available contracts, run the following command:
 
 ```
-poetry run benchmark all 30m directed_greybox
+poetry run benchmark all <uri_or_folder> 30m directed_greybox
 ```
