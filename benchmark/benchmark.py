@@ -56,8 +56,8 @@ class Benchmark():
         else: 
             path = uri
             contracts = self._contract_service.list_contracts_from_folder(path)
-            
-        fuzzing_types_list = fuzzing_types.split(",")        
+        
+        fuzzing_types_list = str(fuzzing_types).split(";")        
         request = RequestFactory.from_contracts_list(
             contracts, duration, fuzzing_types_list, times, path)
 
