@@ -79,7 +79,11 @@ class Benchmark():
         """writes the result to a file
         """
         timestamp = datetime.now().timestamp()
-        folder_path = os.path.join("results", str(timestamp))
+        
+        dt = datetime.fromtimestamp(timestamp)
+        formatted_timestamp = dt.strftime('%Y%m%d%H%M%S')
+        
+        folder_path = os.path.join("results", formatted_timestamp)
         os.makedirs(folder_path, exist_ok=True)
 
         with open(f"{folder_path}/result.json", "w", encoding="utf-8") as file:
