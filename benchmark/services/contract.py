@@ -31,6 +31,7 @@ class ContractService():
         for file in os.listdir(contracts_dir):
             if os.path.isfile(os.path.join(contracts_dir, file)):
                 contract = {
+                    "file": None,
                     "name": file,
                 }
                 contracts.append(contract)
