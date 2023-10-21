@@ -5,9 +5,10 @@ from benchmark.config import Config
 from benchmark.shared.exceptions import ContractNotFoundException, ContractsNotFoundException
 from benchmark.shared.testing import Entry
 
-NAME_COLUMN = 0
-VULNERABILITIES_COLUMN = 1
-LINK_COLUMN = 2
+FILE_COLUMN = 0
+NAME_COLUMN = 1
+VULNERABILITIES_COLUMN = 2
+LINK_COLUMN = 3
 
 
 class ContractService():
@@ -52,6 +53,30 @@ class ContractService():
 
         return contracts
 
+    def list_contracts_from_contract_list_folder(self, folder: str) -> list:
+        """lists the contracts from the contracts.csv file
+        """
+        if not os.path.exists(folder):
+            raise ContractsNotFoundException(
+                "the contracts were not downloaded yet. Please use the command download_contracts first")
+
+        contracts = []
+        contracts_csv = os.path.join(
+            folder, "contracts.csv")
+        with open(contracts_csv, 'r', encoding="utf-8") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                contract = {
+                    "file": row[FILE_COLUMN],
+                    "name": row[NAME_COLUMN],
+                    "vulnerabilities": row[VULNERABILITIES_COLUMN].split(";"),
+                    "link": row[LINK_COLUMN],
+                }
+                contracts.append(contract)
+
+        return contracts
+
+
     def list_contracts_from_contract_list(self) -> list:
         """lists the contracts from the contracts.csv file
         """
@@ -66,6 +91,7 @@ class ContractService():
             reader = csv.reader(file)
             for row in reader:
                 contract = {
+                    "file": row[FILE_COLUMN],
                     "name": row[NAME_COLUMN],
                     "vulnerabilities": row[VULNERABILITIES_COLUMN].split(";"),
                     "link": row[LINK_COLUMN],
@@ -78,7 +104,10 @@ class ContractService():
         """reads the contract's content
         """
         content = None
-        contract_path = os.path.join(entry.path, entry.contract)
+        if entry.file is None:
+            contract_path = os.path.join(entry.path, entry.contract)
+        else:
+            contract_path = os.path.join(entry.path, entry.file)
         if not os.path.exists(contract_path):
             raise ContractNotFoundException(
                 f"the contract {entry.contract} was not found")

@@ -55,7 +55,11 @@ class Benchmark():
             contracts = self._contract_service.list_contracts_from_contract_list()
         else: 
             path = uri
-            contracts = self._contract_service.list_contracts_from_folder(path)
+            contracts_csv = os.path.join(path, "contracts.csv")
+            if not os.path.exists(contracts_csv):
+                contracts = self._contract_service.list_contracts_from_folder(path)
+            else:
+                contracts = self._contract_service.list_contracts_from_contract_list_folder(path)
         
         fuzzing_types_list = str(fuzzing_types).split(";")        
         request = RequestFactory.from_contracts_list(
