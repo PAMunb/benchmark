@@ -37,7 +37,7 @@ class BenchmarkService(metaclass=SingletonMeta):
             if stop.is_set():
                 break
 
-            executions[entry.contract] = {}
+            executions[entry.file] = {}
             for fuzzing_type in entry.fuzzing_types:
                 contract_executions = []
                 for _ in range(entry.times):
@@ -97,7 +97,7 @@ class BenchmarkService(metaclass=SingletonMeta):
                     step = 100/(len(request.entries) *
                                 len(entry.fuzzing_types)*entry.times)
                     self._progress_service.update_progress_bar(step)
-                executions[entry.contract][fuzzing_type] = contract_executions
+                executions[entry.file][fuzzing_type] = contract_executions
 
         self._progress_service.stop()
         self._server_service.stop()
