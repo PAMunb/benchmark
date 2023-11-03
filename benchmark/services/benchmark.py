@@ -2,6 +2,8 @@
 this module contains the service that peforms operations in the benchmark
 """
 import multiprocessing
+import docker
+import os
 
 from datetime import datetime
 from time import sleep
@@ -26,6 +28,7 @@ class BenchmarkService(metaclass=SingletonMeta):
         self._queue_service = QueueService()
         self._dogefuzz_service = DogefuzzService()
         self._contract_service = ContractService()
+        self._docker_client = docker.from_env()         
 
     def run(self, request: Request, stop: multiprocessing.Event) -> list:
         "runs the benchmark following the testing request class"
@@ -87,6 +90,15 @@ class BenchmarkService(metaclass=SingletonMeta):
                         result["endTime"] = datetime.now().strftime(
                             "%d/%m/%Y %H:%M:%S")
                         contract_executions.append(result)
+                        
+                        # Restart dogefuzz and geth for the next test as we timeout
+                        dogefuzz_id = os.environ.get("DOGEFUZZ")
+                        geth_id = os.environ.get("GETH")                        
+                        container = self._docker_client.containers.get(geth_id)
+                        container.restart()
+                        sleep(5)
+                        container = self._docker_client.containers.get(dogefuzz_id)
+                        container.restart()                        
                     else:
                         result["status"] = "success"
                         result["error"] = None

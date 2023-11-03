@@ -30,11 +30,15 @@ while true; do
     break;
   fi
 
-  sleep 5;
+  sleep 3;
 done
 
 echo "[2] Building benchmark container image"
 docker build -t benchmark:1.0.0 --quiet .;
+
+
+dogefuzz_id=$(docker ps --filter "name=$project_name-dogefuzz" -q)
+geth_id=$(docker ps --filter "name=$project_name-geth" -q)
 
 echo "[3] Running benchmark"
 docker run \
@@ -47,6 +51,8 @@ docker run \
     -p "5000" \
     -v "$PWD/results:/app/results" \
     -v "$PWD/dataset:/app/dataset" \
+    -e DOGEFUZZ=$dogefuzz_id \
+    -e GETH=$geth_id \    
     benchmark:1.0.0 \
     $@;
 
