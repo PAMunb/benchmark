@@ -100,6 +100,7 @@ class TaskReport():
     def __init__(
         self,
         task_id: str,
+        task_status: str,        
         time_elapsed: str,
         contract_name: str,
         total_instructions: int,
@@ -114,6 +115,7 @@ class TaskReport():
         instruction_hits_heat_map: map
     ) -> None:
         self._task_id = task_id
+        self._task_status = task_status
         self._time_elapsed = time_elapsed
         self._contract_name = contract_name
         self._total_instructions = total_instructions
@@ -132,6 +134,12 @@ class TaskReport():
         """task_id property
         """
         return self._task_id
+
+    @property
+    def task_status(self):
+        """task_status property
+        """
+        return self._task_status
 
     @property
     def time_elapsed(self):
@@ -210,6 +218,7 @@ class TaskReport():
         """
         return {
             "taskId": self._task_id,
+            "taskStatus": self._task_status,
             "timeElapsed": self._time_elapsed,
             "contractName": self._contract_name,
             "totalInstructions": self._total_instructions,
@@ -230,6 +239,7 @@ class TaskReport():
         """
         return TaskReport(
             task_id=json_content["taskId"],
+            task_status=json_content["taskStatus"],
             time_elapsed=json_content["timeElapsed"],
             contract_name=json_content["contractName"],
             total_instructions=json_content["totalInstructions"],

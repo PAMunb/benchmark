@@ -52,7 +52,8 @@ docker run \
     -v "$PWD/results:/app/results" \
     -v "$PWD/dataset:/app/dataset" \
     -e DOGEFUZZ=$dogefuzz_id \
-    -e GETH=$geth_id \    
+    -e GETH=$geth_id \
+    -v /var/run/docker.sock:/var/run/docker.sock \
     benchmark:1.0.0 \
     $@;
 
