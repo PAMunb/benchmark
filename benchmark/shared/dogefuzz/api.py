@@ -110,6 +110,7 @@ class TaskReport():
         min_distance: int,
         min_distance_by_time: TimeSeriesData,
         detected_weaknesses: list,
+        time_to_weaknesses: map,
         critical_instructions_hits: int,
         instructions: map,
         instruction_hits_heat_map: map
@@ -125,6 +126,7 @@ class TaskReport():
         self._min_distance = min_distance
         self._min_distance_by_time = min_distance_by_time
         self._detected_weaknesses = detected_weaknesses
+        self._time_to_weaknesses = time_to_weaknesses
         self._critical_instructions_hits = critical_instructions_hits
         self._instructions = instructions
         self._instruction_hits_heat_map = instruction_hits_heat_map
@@ -196,6 +198,12 @@ class TaskReport():
         return self._detected_weaknesses
 
     @property
+    def time_to_weaknesses(self):
+        """time_to_weaknesses property
+        """
+        return self._time_to_weaknesses
+
+    @property
     def critical_instructions_hits(self):
         """critical_instructions_hits property
         """
@@ -226,6 +234,7 @@ class TaskReport():
             "maxCoverage": self._max_coverage,
             "minDistance": self._min_distance,
             "detectedWeaknesses": self._detected_weaknesses,
+            "timeToWeaknesses": self._time_to_weaknesses,
             "criticalInstructionsHits": self._critical_instructions_hits,
             "coverageByTime": self._coverage_by_time.to_dict(),
             "minDistanceByTime": self._min_distance_by_time.to_dict(),
@@ -251,6 +260,7 @@ class TaskReport():
             min_distance_by_time=TimeSeriesData.from_json(
                 json_content["minDistanceByTime"]),
             detected_weaknesses=json_content["detectedWeaknesses"],
+            time_to_weaknesses=json_content["timeToWeaknesses"],
             critical_instructions_hits=json_content["criticalInstructionsHits"],
             instructions=json_content["instructions"],
             instruction_hits_heat_map=json_content["instructionHitsHeatMap"],

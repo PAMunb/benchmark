@@ -97,18 +97,7 @@ class BenchmarkService(metaclass=SingletonMeta):
                         result["endTime"] = datetime.now().strftime(
                             "%d/%m/%Y %H:%M:%S")
                         contract_executions.append(result)
-                        
-                        # Restart dogefuzz and geth for the next test as we timedout or got deploy/vandal error
-                        dogefuzz_id = os.environ.get("DOGEFUZZ")
-                        geth_id = os.environ.get("GETH")                        
-                        container = self._docker_client.containers.get(geth_id)
-                        container.restart()
-                        while self.get_health(container) != 'healthy':
-                            sleep(1)                        
-                        container = self._docker_client.containers.get(dogefuzz_id)
-                        container.restart()
-                        while self.get_health(container) != 'healthy':
-                            sleep(1)
+                        self._restart_containers()
                     else:
                         result["status"] = "success"
                         result["error"] = None
@@ -116,16 +105,34 @@ class BenchmarkService(metaclass=SingletonMeta):
                             "%d/%m/%Y %H:%M:%S")
                         result["execution"] = request_result.to_dict()
                         contract_executions.append(result)
+                        
                     step = 100/(len(request.entries) *
                                 len(entry.fuzzing_types)*entry.times)
                     self._progress_service.update_progress_bar(step)
                 executions[entry.file][fuzzing_type] = contract_executions
 
+        if (int(entry.duration[:-1]) >= 10):
+            self._restart_containers()
+                        
         self._progress_service.stop()
         self._server_service.stop()
 
         return executions
 
+
+    def _restart_containers(self):
+        # Restart dogefuzz and geth for the next test, 
+        dogefuzz_id = os.environ.get("DOGEFUZZ")
+        geth_id = os.environ.get("GETH")                        
+        container = self._docker_client.containers.get(geth_id)
+        container.restart()
+        while self.get_health(container) != 'healthy':
+            sleep(1)                        
+        container = self._docker_client.containers.get(dogefuzz_id)
+        container.restart()
+        while self.get_health(container) != 'healthy':
+            sleep(1)
+    
     def _wait_dogefuzz_respond(self, task_id: str, timeout: int, stop: multiprocessing.Event) -> TaskReport:
         report = None
         limit = (timeout + 5) * 60  # duration + 5 minutes
