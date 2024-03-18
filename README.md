@@ -2,7 +2,7 @@
 
 This project is a benchmark for [DogeFuzz](https://github.com/pamunb/dogefuzz) project.
 
-## Running the project using Docker
+## Running the benchmark using a configuration script
 
 To run a benchmark using a script, copy the script.json file:
 
@@ -15,6 +15,8 @@ And execute the script:
 ```
 benchmark.sh script <script_name>
 ```
+
+## Running the benchmark using command line arguments
 
 To run all contracts available, run the following command passing the duration, type of fuzzing, and repetition times:
 
