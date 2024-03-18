@@ -2,7 +2,7 @@
 
 This project is a benchmark for [DogeFuzz](https://github.com/pamunb/dogefuzz) project.
 
-## Running the benchmark using a configuration script
+## Running the benchmark using a configuration script and docker
 
 To run a benchmark using a script, copy the script.json file:
 
@@ -16,7 +16,7 @@ And execute the script:
 benchmark.sh script <script_name>
 ```
 
-## Running the benchmark using command line arguments
+## Running the benchmark using command line arguments and docker
 
 To run all contracts available, run the following command passing the duration, type of fuzzing, and repetition times:
 
@@ -24,7 +24,7 @@ To run all contracts available, run the following command passing the duration, 
 benchmark.sh <uri_or_folder> all 30m directed_greybox 1
 ```
 
-## Running the project locally
+## Running the project locally (without docker)
 This project uses Python 3.10 and [Poetry](https://python-poetry.org/) to manage its dependencies and virtual environment.
 
 To run the project using a script, execute the following commands:
