@@ -43,9 +43,9 @@ class Benchmark():
         """
         request = self._script_service.read_testing_request_from_script(script_name)
         result = self._benchmark_service.run(request, stop_threads)
-        self._write_result(result)
+        self._write_result(result, None)
 
-    def all(self, uri: str, duration: str, fuzzing_types: str, times: str):
+    def all(self, uri: str, duration: str, fuzzing_types: str, times: str, result_prefix: str):
         """benchmarks all available contracts
         """
         parsed_uri = urllib.parse.urlparse(uri)
@@ -66,7 +66,7 @@ class Benchmark():
             contracts, duration, fuzzing_types_list, times, path)
 
         result = self._benchmark_service.run(request, stop_threads)
-        self._write_result(result)
+        self._write_result(result, result_prefix)
         print("SUCCESS")
 
     def generate_results(self, timestamp: str):
@@ -79,15 +79,18 @@ class Benchmark():
         """
         self._drive_service.download_contracts()
 
-    def _write_result(self, result: list):
+    def _write_result(self, result: list, result_prefix: str):
         """writes the result to a file
         """
         timestamp = datetime.now().timestamp()
         
         dt = datetime.fromtimestamp(timestamp)
         formatted_timestamp = dt.strftime('%Y%m%d%H%M%S')
-        
-        folder_path = os.path.join("results", formatted_timestamp)
+        if result_prefix:
+            folder_path = os.path.join("results", result_prefix, formatted_timestamp)
+        else:
+            folder_path = os.path.join("results", formatted_timestamp)
+            
         os.makedirs(folder_path, exist_ok=True)
 
         with open(f"{folder_path}/result.json", "w", encoding="utf-8") as file:
