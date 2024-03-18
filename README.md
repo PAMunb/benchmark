@@ -18,12 +18,26 @@ benchmark.sh script <script_name>
 
 ## Running the benchmark using command line arguments and docker
 
-To run all contracts available, run the following command passing the duration, type of fuzzing, and repetition times:
+To run all contracts available, run the following command passing the duration, type of fuzzing, repetition times and prefix for result folder:
 
 ```
-benchmark.sh <uri_or_folder> all 30m directed_greybox 1
+benchmark.sh <uri_or_folder> all 30m directed_greybox 1 test1
 ```
 
+Available options for type of fuzzing are:
+
+- blackbox
+- greybox
+- directed_greybox
+
+Available options for duration are:
+
+- 1m
+- 5m
+- 15m
+- 30m
+- 60m
+  
 ## Running the project locally (without docker)
 This project uses Python 3.10 and [Poetry](https://python-poetry.org/) to manage its dependencies and virtual environment.
 
