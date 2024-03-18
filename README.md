@@ -1,6 +1,6 @@
 # DogeFuzz's Benchmark
 
-This project is a benchmark for [DogeFuzz](https://github.com/dogefuzz/dogefuzz) project.
+This project is a benchmark for [DogeFuzz](https://github.com/pamunb/dogefuzz) project.
 
 ## Running the project using Docker
 
