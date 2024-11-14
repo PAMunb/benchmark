@@ -5,7 +5,14 @@ this modules contains the constants used by other modules of the project
 FUZZING_TYPE_BLACKBOX_FUZZING = "blackbox"
 FUZZING_TYPE_GREYBOX_FUZZING = "greybox"
 FUZZING_TYPE_DIRECTED_GREYBOX_FUZZING = "directed_greybox"
+
 FUZZING_TYPE_OTHER_DIRECTED_GREYBOX_FUZZING = "other_directed_greybox"
+FUZZING_TYPE_DIRECTED_GREYBOX2_FUZZING = "directed_greybox2"
+FUZZING_TYPE_ALT_GREYBOX_FUZZING = "alt_greybox"
+FUZZING_TYPE_ALT_DIRECTED_GREYBOX_FUZZING = "alt_directed_greybox"
+
+FUZZING_TYPE_MULTI_OBJECTIVE_GREYBOX_FUZZING = "multi_objective_greybox"
+FUZZING_TYPE_GENETIC_ALGORITHM_FUZZING = "genetic_algorithm"
 
 DURATION_1M = "1m"
 DURATION_5M = "5m"
