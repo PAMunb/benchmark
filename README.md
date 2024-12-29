@@ -21,7 +21,7 @@ benchmark.sh script <script_name>
 To run all contracts available, run the following command passing the duration, type of fuzzing, repetition times and prefix for result folder:
 
 ```
-benchmark.sh <uri_or_folder> all 30m directed_greybox 1 test1
+benchmark.sh all <uri_or_folder> 30m directed_greybox 1 test1
 ```
 
 Available options for type of fuzzing are:
