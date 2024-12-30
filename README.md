@@ -24,7 +24,7 @@ To run all contracts available, run the following command passing the duration, 
 benchmark.sh all <uri_or_folder> 30m directed_greybox 1 test1
 ```
 
-Available options for the type of fuzzing are(to pass multiple types use ';' as separator):
+Available options for the type of fuzzing are (to pass multiple types, use ';' as separator):
 
 - blackbox
 - greybox
