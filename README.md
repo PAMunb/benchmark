@@ -18,13 +18,13 @@ benchmark.sh script <script_name>
 
 ## Running the benchmark using command line arguments and docker
 
-To run all contracts available, run the following command passing the duration, type of fuzzing, repetition times and prefix for result folder:
+To run all contracts available, run the following command passing the duration, type of fuzzing, repetition times, and prefix for the result folder:
 
 ```
 benchmark.sh all <uri_or_folder> 30m directed_greybox 1 test1
 ```
 
-Available options for type of fuzzing are:
+Available options for the type of fuzzing are(to pass multiple types use ';' as separator):
 
 - blackbox
 - greybox
